@@ -7,6 +7,16 @@ if (process.env.NODE_ENV !== "production") {
 
 const PORT = process.env.PORT || 8080;
 const target = process.env.TARGET_URL;
-console.log({ target });
-httpProxy.createProxyServer({ target }).listen(PORT);
-console.log("Running");
+
+var proxy = new httpProxy.createProxyServer({target});
+
+var proxyServer = http.createServer(function (req, res) {
+  proxy.web(req, res);
+});
+
+proxyServer.on('upgrade', function (req, socket, head) {
+  proxy.ws(req, socket, head);
+});
+ 
+proxyServer.listen(PORT);
+
