@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 const PORT = process.env.PORT || 8080;
 const target = process.env.TARGET_URL;
 
-var proxy = new httpProxy.createProxyServer({target});
+var proxy = new httpProxy.createProxyServer({target, ws: true});
 
 var proxyServer = http.createServer(function (req, res) {
   proxy.web(req, res);
